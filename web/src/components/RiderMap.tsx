@@ -13,15 +13,17 @@ import { RoutingControl } from "./RoutingControl";
 import { API_URL } from '../constants';
 import { RiderTripOverview } from './RiderTripOverview';
 import { BackendEndpoints, HTTPTripPreviewRequestPayload, HTTPTripPreviewResponse, HTTPTripStartRequestPayload } from '../contracts';
+import mapPinIcon from '../assets/MapPin.svg';
+import carIcon from '../assets/Car.svg';
 
 const userMarker = new L.Icon({
-    iconUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Map_pin_icon.svg/176px-Map_pin_icon.svg.png",
-    iconSize: [40, 40], // Size of the marker
-    iconAnchor: [20, 40], // Anchor point
+    iconUrl: mapPinIcon.src,
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
 });
 
 const driverMarker = new L.Icon({
-    iconUrl: "https://www.svgrepo.com/show/25407/car.svg",
+    iconUrl: carIcon.src,
     iconSize: [30, 30],
     iconAnchor: [15, 30],
 });
@@ -73,7 +75,7 @@ export default function RiderMap({ onRouteSelected }: RiderMapProps) {
             console.log(data)
 
             const parsedRoute = data.route.geometry[0].coordinates
-                .map((coord) => [coord.longitude, coord.latitude] as [number, number])
+                .map((coord) => [coord.latitude, coord.longitude] as [number, number])
 
             setTrip({
                 tripID: "",
@@ -156,10 +158,11 @@ export default function RiderMap({ onRouteSelected }: RiderMapProps) {
                     zoom={13}
                     style={{ height: '100%', width: '100%' }}
                     ref={mapRef}
+                    key={userID}
                 >
                     <TileLayer
-                        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-                        attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors &copy; <a href='https://carto.com/'>CARTO</a>"
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
                     <Marker position={[location.latitude, location.longitude]} icon={userMarker} />
 

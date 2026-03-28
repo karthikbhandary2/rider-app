@@ -21,6 +21,9 @@ spec:
         ports:
         - containerPort: 3000
           name: http
+        env:
+        - name: NODE_ENV
+          value: "development"
         resources:
           requests:
             cpu: "100m"
@@ -28,13 +31,6 @@ spec:
           limits:
             cpu: "500m"
             memory: "512Mi"
-        env:
-        - name: NODE_ENV
-          value: "development"
-        - name: NEXT_PUBLIC_API_URL
-          value: "http://api-gateway:8081"
-        - name: NEXT_PUBLIC_WEBSOCKET_URL
-          value: "ws://api-gateway:8081/ws"
         readinessProbe:
           httpGet:
             path: /

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { WEBSOCKET_URL } from "../constants";
+import { getWebSocketURL } from "../constants";
 import { Trip } from '../types';
 import { Driver, Coordinate } from '../types';
 import { PaymentEventSessionCreatedData, TripEvents, ServerWsMessage, isValidWsMessage, BackendEndpoints } from '../contracts';
@@ -14,7 +14,8 @@ export function useRiderStreamConnection(location: Coordinate, userID: string) {
   useEffect(() => {
     if (!userID) return;
 
-    const ws = new WebSocket(`${WEBSOCKET_URL}${BackendEndpoints.WS_RIDERS}?userID=${userID}`);
+    const wsUrl = getWebSocketURL();
+    const ws = new WebSocket(`${wsUrl}${BackendEndpoints.WS_RIDERS}?userID=${userID}`);
 
     ws.onopen = () => {
       // Send initial location

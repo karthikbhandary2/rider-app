@@ -6,6 +6,18 @@ const nextConfig: NextConfig = {
     domains: ['randomuser.me'],
   },
   reactStrictMode: false,
+  async rewrites() {
+    return [
+      {
+        source: '/trip/:path*',
+        destination: 'http://api-gateway:8081/trip/:path*',
+      },
+      {
+        source: '/ws/:path*',
+        destination: 'http://api-gateway:8081/ws/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

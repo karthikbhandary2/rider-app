@@ -12,6 +12,9 @@ import * as Geohash from 'ngeohash';
 import { RoutingControl } from "./RoutingControl";
 import { DriverCard } from "./DriverCard";
 import { TripEvents } from "../contracts";
+import carIcon from '../assets/Car.svg';
+import userIcon from '../assets/User.svg';
+import mapPinIcon from '../assets/MapPin.svg';
 
 const START_LOCATION: Coordinate = {
   latitude: 37.7749,
@@ -19,21 +22,21 @@ const START_LOCATION: Coordinate = {
 }
 
 const driverMarker = new L.Icon({
-  iconUrl: "https://www.svgrepo.com/show/25407/car.svg",
+  iconUrl: carIcon.src,
   iconSize: [30, 30],
   iconAnchor: [15, 30],
 });
 
 const startLocationMarker = new L.Icon({
-  iconUrl: "https://www.svgrepo.com/show/535711/user.svg",
-  iconSize: [30, 40], // Size of the marker
-  iconAnchor: [20, 40], // Anchor point
+  iconUrl: userIcon.src,
+  iconSize: [30, 40],
+  iconAnchor: [20, 40],
 });
 
 const destinationMarker = new L.Icon({
-  iconUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Map_pin_icon.svg/176px-Map_pin_icon.svg.png",
-  iconSize: [40, 40], // Size of the marker
-  iconAnchor: [20, 40], // Anchor point
+  iconUrl: mapPinIcon.src,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
 });
 
 export const DriverMap = ({ packageSlug }: { packageSlug: CarPackageSlug }) => {
@@ -107,7 +110,7 @@ export const DriverMap = ({ packageSlug }: { packageSlug: CarPackageSlug }) => {
 
   const parsedRoute = useMemo(() =>
     requestedTrip?.route?.geometry[0]?.coordinates
-      .map((coord) => [coord?.longitude, coord?.latitude] as [number, number])
+      .map((coord) => [coord?.latitude, coord?.longitude] as [number, number])
     , [requestedTrip])
 
   // destination is the last coordinate in the route
@@ -132,10 +135,11 @@ export const DriverMap = ({ packageSlug }: { packageSlug: CarPackageSlug }) => {
           zoom={13}
           style={{ height: '100%', width: '100%' }}
           ref={mapRef}
+          key={userID}
         >
           <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-            attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors &copy; <a href='https://carto.com/'>CARTO</a>"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
 
           <Marker
@@ -151,13 +155,13 @@ export const DriverMap = ({ packageSlug }: { packageSlug: CarPackageSlug }) => {
           </Marker>
 
           {startLocation && (
-            <Marker position={[startLocation.longitude, startLocation.latitude]} icon={startLocationMarker}>
+            <Marker position={[startLocation.latitude, startLocation.longitude]} icon={startLocationMarker}>
               <Popup>Start Location</Popup>
             </Marker>
           )}
 
           {destination && (
-            <Marker position={[destination.longitude, destination.latitude]} icon={destinationMarker}>
+            <Marker position={[destination.latitude, destination.longitude]} icon={destinationMarker}>
               <Popup>Destination</Popup>
             </Marker>
           )}
